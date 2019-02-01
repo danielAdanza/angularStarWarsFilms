@@ -1,21 +1,61 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container">
+  
+      <br>
 
-<router-outlet></router-outlet>
+        <h1>
+          {{title}}
+        </h1>
+  
+      <br>
+
+        <h1 *ngIf="state == -1" class="text-danger"> Loading ... </h1>
+
+      <br>
+      
+      <div *ngIf="state == 0">
+        <table  class="table" >
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+
+              <tr *ngFor="let film of films | paginate: {itemsPerPage: 5, currentPage: p}; index as i">
+                <th scope="row"> Episode: {{film.episode_id}}</th>
+                <td><a href="#" (click)="changeState($event, i,p)" >{{ film.title }}</a></td>
+                <td>{{ film.opening_crawl }}</td>
+              </tr>
+
+          </tbody>
+        </table>
+
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+
+      
+      <div *ngIf="state >= 1">
+        <div class="card">
+          <div class="card-header">
+            Episode: {{ films[state-1].episode_id }} Title: {{ films[state-1].title }}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Director: {{ films[state-1].director }}</li>
+            <li class="list-group-item">Producer: {{ films[state-1].producer }}</li>
+            <li class="list-group-item">Release date: {{ films[state-1].release_date }}</li>
+            <li class="list-group-item">Created date: {{ films[state-1].created }} </li>
+            <li class="list-group-item">{{ films[state-1].opening_crawl }}</li>
+          </ul>
+        </div>
+        <br>
+        <button type="button" class="btn btn-dark" (click)="changeState($event, -1,0)">Go Back</button>
+        <br>
+        <br>
+      </div>
+      <br>
+    </div>
+    <br>
+    
+  <router-outlet></router-outlet>
